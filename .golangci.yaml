@@ -1,0 +1,80 @@
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+
+linters:
+  default: standard
+  enable:
+    - errcheck
+    - staticcheck
+    - govet
+    - ineffassign
+    - gocyclo
+    - gocognit
+    - funlen
+    - errname
+    - gosec
+    - bodyclose
+    - unconvert
+    - dupl
+    - misspell
+    - revive
+
+  exclusions:
+    rules:
+      - path: _test\.go$
+        linters:
+          - funlen
+          - dupl
+          - gosec
+          - gocyclo
+          - gocognit
+      - path: internal/e2e/.*_test\.go$
+        linters:
+          - funlen
+          - dupl
+          - gosec
+          - gocyclo
+          - gocognit
+      - text: "G404:"
+        linters:
+          - gosec
+
+  settings:
+    errcheck:
+      check-type-assertions: true
+      check-blank: true
+
+    staticcheck:
+      checks:
+        - all
+        - -SA1019
+
+    govet:
+      enable-all: true
+
+    gocyclo:
+      min-complexity: 18
+
+    gocognit:
+      min-complexity: 22
+
+    funlen:
+      lines: 120
+      statements: 70
+
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
